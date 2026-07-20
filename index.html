@@ -878,4 +878,52 @@
                     </div>
                 </div>
             </article>
->
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container footer-grid">
+            <div>
+                <strong data-lang="en">Qianqi Yang · Game Engineering Portfolio</strong>
+                <strong data-lang="zh">杨千琪 · 游戏工程作品集</strong>
+            </div>
+            <div>
+                <a href="mailto:2700yqq@gmail.com">2700yqq@gmail.com</a><br />
+                <a href="https://github.com/2700yqq" target="_blank" rel="noreferrer">github.com/2700yqq</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const carState = {};
+        function carMove(id, dir) {
+            const el = document.getElementById(id);
+            const n = el.querySelectorAll('.carousel-img').length;
+            carState[id] = ((carState[id] || 0) + dir + n) % n;
+            el.querySelector('.carousel-track').style.transform = `translateX(-${carState[id] * 100}%)`;
+            el.querySelectorAll('.car-dot').forEach((d,i) => d.classList.toggle('active', i === carState[id]));
+        }
+        function carGo(id, idx) { carMove(id, idx - (carState[id] || 0)); }
+
+        const button = document.getElementById("langToggle");
+        const savedLang = localStorage.getItem("portfolio-lang");
+
+        function setLanguage(lang) {
+            document.body.classList.toggle("zh", lang === "zh");
+            button.textContent = lang === "zh" ? "English" : "中文";
+            document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+            localStorage.setItem("portfolio-lang", lang);
+            document.querySelectorAll('#harmony-svg .svg-t').forEach(el => {
+                el.textContent = lang === "zh" ? el.dataset.zh : el.dataset.en;
+            });
+        }
+
+        setLanguage(savedLang || "en");
+
+        button.addEventListener("click", () => {
+            const next = document.body.classList.contains("zh") ? "en" : "zh";
+            setLanguage(next);
+        });
+    </script>
+</body>
+</html>
